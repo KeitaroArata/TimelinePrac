@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Timeline from './Timeline.js'
 
@@ -12,13 +11,20 @@ class App extends Component {
     };
   }
 
+  componentDidMount(){
+    return (
+      console.log("コンポーネントのマウント後"),
+     <fetchAtLocalJson/>
+    );
+  }
+
   render() {
+    const timeline = [];
+
+    
+
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
         <p className="App-intro">
           今何してる？
           <input type="text" value={ this.state.text }
@@ -27,17 +33,33 @@ class App extends Component {
         <p>
           {this.state.text}
           <input type="button" value="ツイート" onClick={() => {
+          
+          
             var array = this.state.timeline;
             array.unshift(this.state.text);
             this.setState({timeline: array});
             this.setState({text: ""});
           }} />
         </p>
-
-        <Timeline timeline={this.state.timeline} />
+        <Timeline timeline={timeline} />
       </div>
     );
   }
+}
+
+function fetchAtLocalJson(){
+  const timeline = [];
+  console.log("コンポーネントのマウント後")
+    fetch("../timeline.json")
+            .then(function(response) {
+            return response.json();
+          }).then(function(json) {
+            for ( var i = 0; i < json.length; i++){
+              console.log(json[i].text);
+              timeline.push(json[i].text);
+              //<Timeline timeline={timeline} />
+              
+            }});
 }
 
 export default App;
