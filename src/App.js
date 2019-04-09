@@ -11,34 +11,46 @@ class App extends Component {
     };
   }
 
-  componentDidMount(){
-    return (
-      console.log("コンポーネントのマウント後"),
-     <fetchAtLocalJson/>
-    );
+  componentDidMount() {
+      console.log("コンポーネントのマウント後");
+      this.fetchAtLocalJson();
+  }
+
+  fetchAtLocalJson = () => {
+    const timeline = [];
+    console.log("コンポーネントのマウント後")
+    fetch("../timeline.json")
+      .then(function (response) {
+        return response.json();
+      }).then((json) => {
+        for (var i = 0; i < json.length; i++) {
+          console.log(json[i].text);
+          timeline.push(json[i].text);
+          //<Timeline timeline={timeline} />
+
+        }
+      });
   }
 
   render() {
     const timeline = [];
 
-    
-
     return (
       <div className="App">
         <p className="App-intro">
           今何してる？
-          <input type="text" value={ this.state.text }
-            onChange={e => {this.setState({text: e.target.value})}}/>
+          <input type="text" value={this.state.text}
+            onChange={e => { this.setState({ text: e.target.value }) }} />
         </p>
         <p>
           {this.state.text}
           <input type="button" value="ツイート" onClick={() => {
-          
-          
+
+
             var array = this.state.timeline;
             array.unshift(this.state.text);
-            this.setState({timeline: array});
-            this.setState({text: ""});
+            this.setState({ timeline: array });
+            this.setState({ text: "" });
           }} />
         </p>
         <Timeline timeline={timeline} />
@@ -47,19 +59,6 @@ class App extends Component {
   }
 }
 
-function fetchAtLocalJson(){
-  const timeline = [];
-  console.log("コンポーネントのマウント後")
-    fetch("../timeline.json")
-            .then(function(response) {
-            return response.json();
-          }).then(function(json) {
-            for ( var i = 0; i < json.length; i++){
-              console.log(json[i].text);
-              timeline.push(json[i].text);
-              //<Timeline timeline={timeline} />
-              
-            }});
-}
+
 
 export default App;

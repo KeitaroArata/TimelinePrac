@@ -4,7 +4,8 @@ class Timeline extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeline: props.timeline
+      timeline: props.timeline,
+      name: props.name,
     }
   }
 
