@@ -6,54 +6,64 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: "",
-      timeline: []
+      timeline: [],
     };
   }
 
-  componentDidMount() {
-      console.log("コンポーネントのマウント後");
-      this.fetchAtLocalJson();
-  }
-
   fetchAtLocalJson = () => {
-    const timeline = [];
-    console.log("コンポーネントのマウント後")
     fetch("../timeline.json")
       .then(function (response) {
         return response.json();
       }).then((json) => {
-        for (var i = 0; i < json.length; i++) {
-          console.log(json[i].text);
-          timeline.push(json[i].text);
-          //<Timeline timeline={timeline} />
+        const timeline = [];
+        for (let i = 0; i < json.length; i++) {
+          const tweet = {
+            text: json[i].text,
+            userName: json[i].user.name,
+          };
 
+          timeline.push(tweet);
         }
+        this.setState({
+          timeline,
+        });
       });
   }
 
-  render() {
-    const timeline = [];
+  componentDidMount() {
+    this.fetchAtLocalJson();
 
+    setInterval(() => {
+      this.setState({
+        timer: 1,
+      })
+  }, 1000);
+  }
+
+  render() {
+    if (this.state.timeline.lenght > 0) {
+      console.log("aaaaaaaaaaa" + this.state.timeline[0].text)
+    }
     return (
       <div className="App">
         <p className="App-intro">
           今何してる？
-          <input type="text" value={this.state.text}
-            onChange={e => { this.setState({ text: e.target.value }) }} />
+          {/* <input type="text" value={this.state.text}
+            onChange={e => { this.setState({ text: e.target.value }) }}/>  */}
+
         </p>
         <p>
           {this.state.text}
           <input type="button" value="ツイート" onClick={() => {
-
-
-            var array = this.state.timeline;
-            array.unshift(this.state.text);
-            this.setState({ timeline: array });
-            this.setState({ text: "" });
+            //<Timeline timeline = {this.state.timeline} />
+            // <Timeline timeline = {timeline} />
+            //var array = this.state.timeline;
+            //array.unshift(this.state.text);
+            //this.setState({ timeline: array });
+            //this.setState({ text: "" });
           }} />
         </p>
-        <Timeline timeline={timeline} />
+        <Timeline timeline={this.state.timeline} />
       </div>
     );
   }
