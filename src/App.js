@@ -21,7 +21,6 @@ class App extends Component {
             text: json[i].text,
             userName: json[i].user.name,
           };
-
           timeline.push(tweet);
         }
         this.setState({
@@ -32,12 +31,14 @@ class App extends Component {
 
   componentDidMount() {
     this.fetchAtLocalJson();
-
-    setInterval(() => {
-      this.setState({
-        timer: 1,
-      })
-  }, 1000);
+    // setInterval(() => {
+    //   this.setState({
+    //     timer: 1,
+    //   })
+    // }, 1000);
+  }
+  componentWillUnmount(){
+    this.fetchAtLocalJson();
   }
 
   render() {
@@ -63,7 +64,7 @@ class App extends Component {
             //this.setState({ text: "" });
           }} />
         </p>
-        <Timeline timeline={this.state.timeline} />
+        <Timeline timeline = {this.state.timeline} />
       </div>
     );
   }
